@@ -1,0 +1,11 @@
+.Card {
+    width: 5rem;
+    aspect-ratio: 1/1.5;
+    border-top-left-radius: 0.8rem;
+    border-top-right-radius: 0.8rem;
+    border-bottom-left-radius: 0.8rem;
+    border-bottom-right-radius: 0.8rem;
+    border: 1px solid rgb(3, 245, 132);
+    background-color: rgb(45, 45, 45);
+    box-shadow: 10px 10px 0 0 solid black;
+}
