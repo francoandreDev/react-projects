@@ -5,7 +5,19 @@
     border-top-right-radius: 0.8rem;
     border-bottom-left-radius: 0.8rem;
     border-bottom-right-radius: 0.8rem;
+    box-shadow: 10px 10px 0 0 solid black;
+    cursor: grab;
+    transition-property: background-color, color;
+    transition-duration: 0.3s;
+    transition-timing-function: ease;
+}
+
+.unknown {
     border: 1px solid rgb(3, 245, 132);
     background-color: rgb(45, 45, 45);
-    box-shadow: 10px 10px 0 0 solid black;
+}
+
+.open {
+    border: 1px solid rgb(3, 180, 245);
+    background-color: rgb(128, 128, 128);
 }

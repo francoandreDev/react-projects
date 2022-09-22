@@ -1,11 +1,16 @@
-import React from 'react';
-import './Card.css';
+import React, { useEffect, useState } from "react";
+import "./Card.css";
 
-const Card = ({status}) => {
+const Card = ({ status }) => {
+    const [cardStatus, setCardStatus] = useState(status);
+    useEffect(() => {
+        setCardStatus(status);
+    }, [status]);
     return (
-        <div className={`Card ${status}`}>
-
-        </div>
+        <button
+            className={`Card ${cardStatus}`}
+            onClick={() => setCardStatus("open")}
+        ></button>
     );
 };
 
