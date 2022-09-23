@@ -6,14 +6,59 @@
 }
 
 .bg {
-    background-color: steelblue;
-    position: fixed;
-    width: 100vw;
-    height: 100vh;
+    background-image: radial-gradient(
+        circle,
+        #527bf2,
+        #5a84f1,
+        #638def,
+        #6c95ed,
+        #779deb,
+        #7292dc,
+        #6d87cd,
+        #687cbe,
+        #545c9f,
+        #423e80,
+        #312061,
+        #200143,
+        #250548,
+        #200143,
+        #312061,
+        #423e80,
+        #545c9f,
+        #687cbe,
+        #6d87cd,
+        #7292dc,
+        #779deb,
+        #6c95ed,
+        #638def,
+        #5a84f1,
+        #527bf2
+    );
+    background-size: 2000% 2000%;
+    animation: gradient 700s ease infinite;
+    position: relative;
+    min-width: 100vw;
+    min-height: 100vh;
+    width: 100%;
+    height: 100%;
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
+    padding: 5rem;
+    -webkit-animation: gradient 700s ease infinite;
+}
+
+@keyframes gradient {
+    0% {
+        background-position: 0% 50%;
+    }
+    50% {
+        background-position: 100% 50%;
+    }
+    100% {
+        background-position: 0% 50%;
+    }
 }
 
 h1 {
@@ -37,4 +82,35 @@ h1 {
 li {
     list-style: None;
     width: fit-content;
+}
+
+.button-newGame {
+    background: rgb(45, 45, 45);
+    min-width: 10rem;
+    width: fit-content;
+    aspect-ratio: 1/0.3;
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+    border-bottom-left-radius: 10px;
+    border-bottom-right-radius: 10px;
+    color: rgb(215, 215, 215);
+    font-size: 1.5rem;
+    border: 1.5px solid rgb(246, 3, 88);
+    text-shadow: 1px 1px 10px black;
+    filter: drop-shadow(1px 0 2.5px rgba(0, 0, 0, 0.4));
+    -webkit-filter: drop-shadow(1px 0 2.5px rgba(0, 0, 0, 0.4));
+    transition-property: filter, transform;
+    transition-duration: 0.5s;
+    transition-timing-function: ease-in;
+}
+
+.button-newGame:hover {
+    filter: drop-shadow(1px 0 2.5px rgba(255, 255, 255, 0.5));
+    -webkit-filter: drop-shadow(1px 0 2.5px rgba(255, 255, 255, 0.5));
+    text-shadow: 1px 1px 100px black;
+    transform: translateY(-5px);
+    -webkit-transform: translateY(-5px);
+    -moz-transform: translateY(-5px);
+    -ms-transform: translateY(-5px);
+    -o-transform: translateY(-5px);
 }
