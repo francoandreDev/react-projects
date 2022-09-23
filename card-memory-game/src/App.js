@@ -12,13 +12,8 @@ function App() {
         new Array(newRandom(20)).fill({ status: "unknown" })
     );
 
-    const updateDeck = () => {
-        setMyCards(null);
-        setMyCards(
-            new Array(newRandom(20)).fill({
-                status: "unknown",
-            })
-        );
+    const newGame = () => {
+        setMyCards(new Array(newRandom(20)).fill({ status: "unknown" }));
         setCount(count + 1);
     };
 
@@ -28,11 +23,11 @@ function App() {
             <ul className="cards">
                 {myCards.map((card, index) => (
                     <li key={index}>
-                        <Card status={card.status} />
+                        <Card card={card} count={count} />
                     </li>
                 ))}
             </ul>
-            <button onClick={() => updateDeck()}> New Game </button>
+            <button onClick={() => newGame()}> New Game </button>
         </div>
     );
 }

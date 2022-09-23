@@ -1,15 +1,21 @@
 import React, { useEffect, useState } from "react";
 import "./Card.css";
 
-const Card = ({ status }) => {
-    const [cardStatus, setCardStatus] = useState(status);
+const Card = ({ card }) => {
+    const [cardStatus, setCardStatus] = useState(card.status);
+    const changeStatus = () => {
+        if (cardStatus === "unknown") setCardStatus("open");
+        else setCardStatus("unknown");
+    };
+
     useEffect(() => {
-        setCardStatus(status);
-    }, [status]);
+        setCardStatus(card.status)
+    }, [card]);
+
     return (
         <button
             className={`Card ${cardStatus}`}
-            onClick={() => setCardStatus("open")}
+            onClick={() => changeStatus()}
         ></button>
     );
 };
