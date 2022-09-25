@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from "react";
 import "./Card.css";
 
-import cardBg from '../assets/bg-card.jpg';
+import cardBg from "../assets/bg-card.jpg";
 
-const Card = ({ card, index }) => {
+const Card = ({ card, index, content }) => {
     const [cardStatus, setCardStatus] = useState(card.status);
     const changeStatus = () => {
         if (cardStatus === "unknown") setCardStatus("open");
@@ -16,11 +16,13 @@ const Card = ({ card, index }) => {
 
     return (
         <button className={`Card ${cardStatus}`} onClick={() => changeStatus()}>
-            {cardStatus === "open" ?
-                <p className="text-card">{index + 1}</p>
-                :
+            {cardStatus === "open" ? (
+                <>
+                    <i className={`${content[index]} text-card`}></i>
+                </>
+            ) : (
                 <img src={cardBg} alt="random card" className="random-card" />
-            }
+            )}
         </button>
     );
 };
