@@ -3,57 +3,53 @@ import "./App.css";
 import Card from "./cards/Card";
 
 function App() {
-    const [content, setContent] = useState([
-        "fa-solid fa-heart",
-        "fa-solid fa-shield-halved",
-        "fa-solid fa-ghost",
-        "fa-solid fa-dice",
-        "fa-solid fa-pen",
-        "fa-solid fa-brain",
-        "fa-solid fa-cube",
-        "fa-solid fa-eraser",
-        "fa-solid fa-spray-can",
-        "fa-solid fa-dragon",
-        "fa-solid fa-heart",
-        "fa-solid fa-shield-halved",
-        "fa-solid fa-ghost",
-        "fa-solid fa-dice",
-        "fa-solid fa-pen",
-        "fa-solid fa-brain",
-        "fa-solid fa-cube",
-        "fa-solid fa-eraser",
-        "fa-solid fa-spray-can",
-        "fa-solid fa-dragon",
-    ]);
-
+    const iconsAvailable = [
+        "heart",
+        "shield-halved",
+        "ghost",
+        "dice",
+        "pen",
+        "brain",
+        "cube",
+        "eraser",
+        "spray-can",
+        "dragon",
+    ];
     const newRandom = (n) => {
-        return Math.floor(Math.random() * n - 5) + 6;
+        let random = Math.floor(Math.random() * n - 5) + 6;
+        if (random % 2 === 1) random++;
+        return random;
     };
+    const [random, setRandom] = useState(newRandom(20));
+    const myIcons = iconsAvailable.filter(
+        (icon, index) => index >= 0 && index < random / 2
+    );
+    const [content, setContent] = useState(
+        myIcons.concat(myIcons).sort(() => Math.random() - 0.5)
+    );
 
     const [count, setCount] = useState(1);
     const [myCards, setMyCards] = useState(
-        new Array(newRandom(20)).fill({
-            text: "Open",
-            status: "unknown",
+        new Array(random).fill({
+            status: "close",
         })
     );
 
-    const sortCards = () => {
-        content.sort(() => Math.random() - 0.5);
-        setContent(content);
-    };
-
     const newGame = () => {
+        setRandom(newRandom(20));
+        const myIcons = iconsAvailable.filter(
+            (icon, index) => index < random / 2
+        );
+        setContent(myIcons.concat(myIcons).sort(() => Math.random() - 0.5));
         setMyCards(
-            new Array(newRandom(20)).fill({
-                text: "Open",
-                status: "unknown",
+            new Array(random).fill({
+                status: "close",
             })
         );
-
-        sortCards();
         setCount(count + 1);
     };
+
+    const [selectCard, setSelectedCard] = useState(new Array(2));
 
     return (
         <div className="bg">
@@ -61,13 +57,19 @@ function App() {
             <ul className="cards">
                 {myCards.map((card, index) => (
                     <li key={index}>
-                        <Card card={card} index={index} content={content} />
+                        <Card
+                            card={card}
+                            content={content[index]}
+                            selectCard={{
+                                'state': selectCard,
+                                'setState': setSelectedCard,
+                            }}
+                        />
                     </li>
                 ))}
             </ul>
             <button onClick={() => newGame()} className="button-newGame">
-                {" "}
-                New Game{" "}
+                New Game
             </button>
         </div>
     );
