@@ -15,58 +15,75 @@ function App() {
         "spray-can",
         "dragon",
     ];
-    const newRandom = (n) => {
-        let random = Math.floor(Math.random() * n - 5) + 6;
-        if (random % 2 === 1) random++;
-        return random;
+
+    const onlyEven = (random) => {
+        return random % 2 === 0 ? random : random + 1;
     };
-    const [random, setRandom] = useState(newRandom(20));
-    const myIcons = iconsAvailable.filter(
-        (icon, index) => index >= 0 && index < random / 2
-    );
-    const [content, setContent] = useState(
-        myIcons.concat(myIcons).sort(() => Math.random() - 0.5)
-    );
 
-    const [count, setCount] = useState(1);
-    const [myCards, setMyCards] = useState(
-        new Array(random).fill({
-            status: "close",
-        })
-    );
+    const newEvenRandom = (n) => {
+        const random = Math.floor(Math.random() * n - 5) + 6;
+        const evenRandom = onlyEven(random);
+        return evenRandom;
+    };
 
-    const newGame = () => {
-        setRandom(newRandom(20));
+    const filterIcons = () => {
         const myIcons = iconsAvailable.filter(
             (icon, index) => index < random / 2
         );
-        setContent(myIcons.concat(myIcons).sort(() => Math.random() - 0.5));
-        setMyCards(
-            new Array(random).fill({
-                status: "close",
-            })
-        );
+        return myIcons;
+    };
+
+    const sortBothIcons = (myIcons) => {
+        const sortIcons = myIcons
+            .concat(myIcons)
+            .sort(() => Math.random() - 0.5);
+        return sortIcons;
+    };
+
+    const newContent = () => {
+        const myIcons = filterIcons();
+        const sortIcons = sortBothIcons(myIcons);
+        return sortIcons;
+    };
+
+    const createCardsArray = () => {
+        return new Array(random)
+            .fill({ status: "close", content: null })
+            .map((thisCard, index) => {
+                return {...thisCard, content: myContent[index]}
+            });
+    };
+
+    const newGame = () => {
+        setRandom(newEvenRandom(20));
+        setMyContent(newContent());
+        setMyCards(createCardsArray());
         setCount(count + 1);
     };
 
-    const [selectCard, setSelectedCard] = useState(new Array(2));
+    const [random, setRandom] = useState(newEvenRandom(20));
+    const [myContent, setMyContent] = useState(newContent());
+    const [myCards, setMyCards] = useState(createCardsArray());
+    const [selectCard, setSelectedCard] = useState(undefined);
+    const [count, setCount] = useState(0);
 
     return (
         <div className="bg">
             <h1>Game {count}</h1>
             <ul className="cards">
-                {myCards.map((card, index) => (
-                    <li key={index}>
-                        <Card
-                            card={card}
-                            content={content[index]}
-                            selectCard={{
-                                'state': selectCard,
-                                'setState': setSelectedCard,
-                            }}
-                        />
-                    </li>
-                ))}
+                {myCards.map((card, index) => {
+                    return (
+                        <li key={index}>
+                            <Card
+                                card={card}
+                                selectCard={{
+                                    state: selectCard,
+                                    setState: setSelectedCard,
+                                }}
+                            />
+                        </li>
+                    );
+                })}
             </ul>
             <button onClick={() => newGame()} className="button-newGame">
                 New Game
