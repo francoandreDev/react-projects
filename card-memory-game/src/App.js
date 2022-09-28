@@ -1,6 +1,6 @@
 import { useState } from "react";
-import "./App.css";
 import Card from "./cards/Card";
+import "./App.css";
 
 function App() {
     const iconsAvailable = [
@@ -21,12 +21,12 @@ function App() {
     };
 
     const newEvenRandom = (n) => {
-        const random = Math.floor(Math.random() * n - 5) + 6;
-        const evenRandom = onlyEven(random);
+        const newRandom = Math.floor(Math.random() * n - 5) + 6;
+        const evenRandom = onlyEven(newRandom);
         return evenRandom;
     };
 
-    const filterIcons = () => {
+    const filterIcons = (random) => {
         const myIcons = iconsAvailable.filter(
             (icon, index) => index < random / 2
         );
@@ -36,36 +36,45 @@ function App() {
     const sortBothIcons = (myIcons) => {
         const sortIcons = myIcons
             .concat(myIcons)
-            .sort(() => Math.random() - 0.5);
+            .sort(() => Math.random() - 0.5)
+            .map(element=>element)
         return sortIcons;
     };
 
-    const newContent = () => {
-        const myIcons = filterIcons();
+    const newContent = (random) => {
+        const myIcons = filterIcons(random);
         const sortIcons = sortBothIcons(myIcons);
         return sortIcons;
     };
 
-    const createCardsArray = () => {
+    const createCardsArray = (random, content=null) => {
         return new Array(random)
             .fill({ status: "close", content: null })
             .map((thisCard, index) => {
-                return {...thisCard, content: myContent[index]}
-            });
+                return content === null ?
+                    { ...thisCard, content: myContent[index] }
+                :   { ...thisCard, content: content[index] }
+            })
+            .splice(0, iconsAvailable.length*2)
     };
 
     const newGame = () => {
-        setRandom(newEvenRandom(20));
-        setMyContent(newContent());
-        setMyCards(createCardsArray());
         setCount(count + 1);
+        setRandom(newEvenRandom((count+1)*2));
+        const content = newContent(random)
+        setMyContent(content)
+        const cards = createCardsArray(random, content)
+        setMyCards(cards)
+        console.log(cards, random)
+        setSelectedCard(undefined);
     };
 
-    const [random, setRandom] = useState(newEvenRandom(20));
-    const [myContent, setMyContent] = useState(newContent());
-    const [myCards, setMyCards] = useState(createCardsArray());
-    const [selectCard, setSelectedCard] = useState(undefined);
+
     const [count, setCount] = useState(0);
+    const [random, setRandom] = useState(2);
+    const [myContent, setMyContent] = useState(newContent(random));
+    const [myCards, setMyCards] = useState(createCardsArray(random));
+    const [selectCard, setSelectedCard] = useState(undefined);
 
     return (
         <div className="bg">
