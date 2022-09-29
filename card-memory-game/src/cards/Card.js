@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import "./Card.css";
 
 import cardBg from "../assets/bg-card.jpg";
@@ -27,7 +27,11 @@ const Card = ({ index, card, indexCard, myCards }) => {
     const showIcon = (
         <i className={`fa-solid fa-${card.content} text-card`}></i>
     );
-    const showTextIcon = <p className="text-card">{card.content}</p>;
+    const showTextIcon = (
+        <p className="text-card" style={{ fontSize: "1rem" }}>
+            {card.content}
+        </p>
+    );
 
     return (
         <button className={`Card ${cardStatus}`} onClick={() => changeStatus()}>
@@ -36,9 +40,6 @@ const Card = ({ index, card, indexCard, myCards }) => {
             ) : (
                 <img src={cardBg} alt="random card" className="random-card" />
             )}
-            {
-                console.log(cardStatus)
-            }
         </button>
     );
 };
