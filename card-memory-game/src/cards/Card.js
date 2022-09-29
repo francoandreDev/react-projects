@@ -3,57 +3,42 @@ import "./Card.css";
 
 import cardBg from "../assets/bg-card.jpg";
 
-const Card = ({ card, selectCard }) => {
+const Card = ({ index, card, indexCard, myCards }) => {
+    const indexCardState = indexCard.state;
+    const setIndexCardState = indexCard.setState;
+    const myCardsState = myCards.state;
+    const setMyCardsState = myCards.setState;
+
     const changeStatus = () => {
-        const cardState = selectCard["state"];
-        const setCardState = selectCard["setState"];
-        findMatchContentInCards(cardState, setCardState);
+        myCardsState[index].status =
+            myCardsState[index].status === "open" ? "close" : "open";
+        if (indexCardState[0] === null) indexCardState[0] = index;
+        else if (indexCardState[1] === null) indexCardState[1] = index;
+        setIndexCardState([...indexCardState]);
+        setMyCardsState([...myCardsState]);
+        indexCardState.forEach((i) => {
+            if (index === i) card.status = myCardsState[index].status;
+        });
+        setCardStatus(myCardsState[index].status);
+        setMyCardsState(myCardsState);
     };
 
-    const findMatchContentInCards = (cardState, setCardState) => {
-        if (cardState === undefined) {
-            console.log(card);
-            card!==undefined&&setCardState(card);
-            //! This should not be undefined
-            console.log(cardState)
-        }
-        if (cardState.content !== undefined) {
-            matchContentCards(cardState, setCardState);
-        }
-    };
-
-    const matchContentCards = (cardState, setCardState) => {
-        if (cardState.content !== card.content) closeCards()
-        if (cardState.content === card.content) openCards()
-        setCardState(undefined);
-    };
-
-    const closeCards = () => {
-        setTimeout(() => {
-            setCardStatus("close");
-        }, 2500);
-    };
-
-    const openCards = () => {
-        console.log("yeah");
-        setCardStatus("open")
-    };
-
-    const [cardStatus, setCardStatus] = useState(card.status);
-
-    useEffect(() => {
-        setCardStatus(card.status);
-    }, [card]);
+    const [cardStatus, setCardStatus] = useState(myCardsState[index].status);
+    const showIcon = (
+        <i className={`fa-solid fa-${card.content} text-card`}></i>
+    );
+    const showTextIcon = <p className="text-card">{card.content}</p>;
 
     return (
         <button className={`Card ${cardStatus}`} onClick={() => changeStatus()}>
-            {(cardStatus !== "open") ? (
-                <>
-                    <i className={`fa-solid fa-${card.content} text-card`}></i>
-                </>
+            {cardStatus !== "open" ? (
+                <>{showIcon.ref !== null ? showIcon : showTextIcon}</>
             ) : (
                 <img src={cardBg} alt="random card" className="random-card" />
             )}
+            {
+                console.log(cardStatus)
+            }
         </button>
     );
 };

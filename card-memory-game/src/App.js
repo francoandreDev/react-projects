@@ -37,7 +37,7 @@ function App() {
         const sortIcons = myIcons
             .concat(myIcons)
             .sort(() => Math.random() - 0.5)
-            .map(element=>element)
+            .map((element) => element);
         return sortIcons;
     };
 
@@ -47,34 +47,33 @@ function App() {
         return sortIcons;
     };
 
-    const createCardsArray = (random, content=null) => {
+    const createCardsArray = (random, content = null) => {
         return new Array(random)
             .fill({ status: "close", content: null })
             .map((thisCard, index) => {
-                return content === null ?
-                    { ...thisCard, content: myContent[index] }
-                :   { ...thisCard, content: content[index] }
+                return content === null
+                    ? { ...thisCard, content: myContent[index] }
+                    : { ...thisCard, content: content[index] };
             })
-            .splice(0, iconsAvailable.length*2)
+            .splice(0, iconsAvailable.length * 2);
     };
 
     const newGame = () => {
         setCount(count + 1);
-        setRandom(newEvenRandom((count+1)*2));
-        const content = newContent(random)
-        setMyContent(content)
-        const cards = createCardsArray(random, content)
-        setMyCards(cards)
-        console.log(cards, random)
-        setSelectedCard(undefined);
+        setRandom(newEvenRandom((count + 1) * 2));
+        const content = newContent(random);
+        setMyContent(content);
+        const cards = createCardsArray(random, content);
+        setMyCards(cards);
+        setIndexCard([null, null]);
     };
-
 
     const [count, setCount] = useState(0);
     const [random, setRandom] = useState(2);
     const [myContent, setMyContent] = useState(newContent(random));
     const [myCards, setMyCards] = useState(createCardsArray(random));
-    const [selectCard, setSelectedCard] = useState(undefined);
+    const [indexCard, setIndexCard] = useState([null, null]);
+
 
     return (
         <div className="bg">
@@ -84,10 +83,15 @@ function App() {
                     return (
                         <li key={index}>
                             <Card
+                                index={index}
                                 card={card}
-                                selectCard={{
-                                    state: selectCard,
-                                    setState: setSelectedCard,
+                                indexCard={{
+                                    state: indexCard,
+                                    setState: setIndexCard,
+                                }}
+                                myCards={{
+                                    state: myCards,
+                                    setState: setMyCards,
                                 }}
                             />
                         </li>
