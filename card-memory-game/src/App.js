@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Card from "./cards/Card";
 import "./App.css";
 
@@ -66,6 +66,8 @@ function App() {
         const cards = createCardsArray(random, content);
         setMyCards(cards);
         setIndexCard([null, null]);
+        setScore(0)
+        setWin(100 * random);
     };
 
     const [count, setCount] = useState(0);
@@ -73,11 +75,24 @@ function App() {
     const [myContent, setMyContent] = useState(newContent(random));
     const [myCards, setMyCards] = useState(createCardsArray(random));
     const [indexCard, setIndexCard] = useState([null, null]);
+    const [score, setScore] = useState(0);
+    const [win, setWin] = useState(100 * random);
 
+    useEffect(() => {
+        if (score === win) {
+            setTimeout(() => {
+                setScore("Win");
+                setTimeout(() => {
+                    newGame()
+                }, 500);
+            }, 500);
+        }
+    }, [score]);
 
     return (
         <div className="bg">
             <h1>Game {count}</h1>
+            <h2>Score: {score}</h2>
             <ul className="cards">
                 {myCards.map((card, index) => {
                     return (
@@ -92,6 +107,10 @@ function App() {
                                 myCards={{
                                     state: myCards,
                                     setState: setMyCards,
+                                }}
+                                myScore={{
+                                    state: score,
+                                    setState: setScore,
                                 }}
                             />
                         </li>

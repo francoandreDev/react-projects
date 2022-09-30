@@ -53,7 +53,8 @@
     -o-transform: scale(1.1);
 }
 
-.open {
+.open,
+.match {
     border: 1px solid rgb(3, 180, 245);
     background-color: rgb(56, 56, 56);
     position: relative;
@@ -63,11 +64,13 @@
     transition-timing-function: ease-in;
 }
 
-.open:active .text-card {
+.open:active .text-card,
+.match:active .text-card {
     color: rgb(230, 230, 230);
 }
 
-.open:active::before {
+.open:active::before,
+.match:active::before {
     content: "";
     position: absolute;
     top: 0;
@@ -83,6 +86,11 @@
     -moz-border-radius: inherit;
     -ms-border-radius: inherit;
     -o-border-radius: inherit;
+}
+
+.match {
+    border: 1px solid rgb(245, 148, 3);
+    background-color: rgb(79, 79, 79);
 }
 
 .text-card {
