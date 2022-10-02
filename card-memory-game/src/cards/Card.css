@@ -20,9 +20,9 @@
 
 .Card:focus {
     transition: animation;
-    animation: card-select 1s ease;
+    animation: card-select 0.5s ease 0.2s;
     transition-timing-function: ease;
-    -webkit-animation: card-select 1s ease;
+    -webkit-animation: card-select 0.5s ease 0.2s;
 }
 
 @keyframes card-select {
@@ -31,8 +31,8 @@
         -webkit-filter: blur(0px);
     }
     50% {
-        filter: blur(50px);
-        -webkit-filter: blur(50px);
+        filter: blur(50px) brightness(50%);
+        -webkit-filter: blur(50px) brightness(50%);
     }
     100% {
         filter: blur(0px);
@@ -75,7 +75,7 @@
     position: absolute;
     top: 0;
     left: 0;
-    z-index: 1;
+    z-index: 2;
     background-color: rgba(255, 255, 255, 0.3);
     filter: blur(5px);
     -webkit-filter: blur(5px);
@@ -89,8 +89,109 @@
 }
 
 .match {
-    border: 1px solid rgb(245, 148, 3);
-    background-color: rgb(79, 79, 79);
+    border: 1px groove rgb(169, 169, 169);
+}
+
+.match::before {
+    content: "";
+    position: absolute;
+    top: -2px;
+    left: -2px;
+    width: 0;
+    height: 0;
+    background-color: rgb(79, 79, 79, 0.5);
+    border: 1px groove rgb(245, 148, 3);
+    border-radius: inherit;
+    animation: border-animate-1 2s forwards;
+    -webkit-animation: border-animate-1 2s forwards;
+    -webkit-border-radius: inherit;
+    -moz-border-radius: inherit;
+    -ms-border-radius: inherit;
+    -o-border-radius: inherit;
+}
+
+@keyframes border-animate-1 {
+    0% {
+        width: 0;
+        height: 0;
+        border-top-color: rgb(245, 148, 3);
+        border-right-color: rgb(245, 148, 3);
+        border-bottom-color: rgb(79, 79, 79, 0.5);
+        border-left-color: rgb(245, 148, 3);
+}
+
+    50% {
+        width: 100%;
+        height: 0;
+        border-top-color: rgb(245, 148, 3);
+        border-right-color: rgb(245, 148, 3);
+        border-bottom-color: rgb(79, 79, 79, 0.5);
+        border-left-color: rgb(245, 148, 3);
+    }
+
+    100% {
+        width: 100%;
+        height: 100%;
+        border-top-color: rgb(245, 148, 3);
+        border-right-color: rgb(245, 148, 3);
+        border-bottom-color:rgb(79, 79, 79, 0.5);
+        border-left-color: rgb(245, 148, 3);
+    }
+}
+
+.match::after {
+    content: "";
+    position: absolute;
+    top: -2px;
+    left: -2px;
+    width: 0;
+    height: 0;
+    background: transparent;
+    border: 1px solid transparent;
+    border-radius: inherit;
+    -webkit-border-radius: inherit;
+    -moz-border-radius: inherit;
+    -ms-border-radius: inherit;
+    -o-border-radius: inherit;
+}
+
+.match::after {
+    border-radius: inherit;
+    animation: border-animate-2 2s linear forwards;
+    -webkit-animation: border-animate-2 2s linear forwards;
+    -webkit-border-radius: inherit;
+    -moz-border-radius: inherit;
+    -ms-border-radius: inherit;
+    -o-border-radius: inherit;
+}
+
+@keyframes border-animate-2 {
+    0% {
+        width: 0;
+        height: 0;
+        border-top-color: rgb(245, 148, 3);
+        border-right-color: rgb(79, 79, 79, 0.5);
+        border-bottom-color: rgb(245, 148, 3);
+        border-left-color: rgb(245, 148, 3);
+    }
+
+    50% {
+        width: 0;
+        height: 100%;
+        border-top-color: rgb(245, 148, 3);;
+        border-right-color: rgb(79, 79, 79, 0.5);
+        border-bottom-color: rgb(245, 148, 3);
+        border-left-color: rgb(245, 148, 3);
+    }
+
+    100% {
+        width: 100%;
+        height: 100%;
+        border-top-color: rgb(245, 148, 3);;
+        border-right-color: rgb(79, 79, 79, 0.5);
+        border-bottom-color: rgb(245, 148, 3);
+        border-left-color: rgb(245, 148, 3);
+    }
 }
 
 .text-card {

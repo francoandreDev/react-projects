@@ -1,92 +1,80 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
+
 import "./Card.css";
 
 import cardBg from "../assets/bg-card.jpg";
 
-const Card = ({ index, card, indexCard, myCards, myScore }) => {
-    const indexCardState = indexCard.state;
-    const setIndexCardState = indexCard.setState;
-    const myCardsState = myCards.state;
-    const setMyCardsState = myCards.setState;
-    const myScoreState = myScore.state;
-    const setMyScoreState = myScore.setState;
+const Card = ({ card, score, selectCards, win }) => {
+    const selectCardsState = selectCards.state
+    const setSelectCardsState = selectCards.setState
+    const scoreState = score.state
+    const setScoreState = score.setState
+    const Icon = card.icon
 
     const changeStatus = () => {
-        if (myCardsState[index].status === "match") return;
-        if (isFirstOrSecondCard() === null) return;
-        turnCard();
-        const position = isFirstOrSecondCard();
-        updateArrayState(indexCardState, position, index, setIndexCardState);
-        setMyCardsState([...myCardsState]);
-        setCardStatus(myCardsState[index].status);
-        if (position === 1) {
-            matchContent();
-            setIndexCardState([null, null]);
+        turnSelectedCard()
+        const index = isFirstOrSecondCard()
+        if (card.status === "open") {
+            if (index === 1) firstCardSelected()
+            if (index === 2) {
+                if (card.content !== selectCardsState.content) secondCardIsDifferent()
+                else if (card.id !== selectCardsState.id) secondCardIsDifferent()
+                else secondCardIsEqual()
+            }
+            if (score === win) {
+                console.log("Congratulations you have", score, "you win")
+            }
         }
-    };
-
-    const turnCard = () => {
-        myCardsState[index].status =
-            myCardsState[index].status === "open" ? "close" : "open";
-    };
+    }
 
     const isFirstOrSecondCard = () => {
-        if (indexCardState[0] === null) return 0;
-        else if (indexCardState[1] === null) return 1;
-        else return null;
-    };
+        return (selectCardsState === null) ? 1 : 2
+    }
 
-    const updateArrayState = (array, index, value, setArray) => {
-        array[index] = value;
-        setArray([...array]);
-    };
+    const turnSelectedCard = () => {
+        card.status = card.status === "close" ? "open" : "close"
+    }
 
-    const matchContent = () => {
-        const [firstIndex, secondIndex] = indexCardState;
+    const firstCardSelected = () => {
         setTimeout(() => {
-            let action = "open";
-            if (myCardsState[firstIndex].status !== "match") {
-                if (
-                    myCardsState[firstIndex].content ===
-                    myCardsState[secondIndex].content
-                ) {
-                    action = "match";
-                    setMyScoreState(myScoreState + 200);
-                    myCardsState[firstIndex].status = action;
-                    myCardsState[secondIndex].status = action;
-                } else {
-                    action = "close";
-                    indexCardState[1] = null;
-                    setIndexCardState([...indexCardState]);
-                    myCardsState[secondIndex].status = action;
-                }
-            }
-            card.status = action;
-            setCardStatus(myCardsState[index].status);
+            setCardStatus(card.status)
+            setScoreState(scoreState + 100)
+            setSelectCardsState(card)
         }, 1000);
-        setMyCardsState([...myCardsState]);
-    };
+    }
 
-    useEffect(() => {
-        setCardStatus(card.status);
-    }, [card]);
+    const secondCardIsDifferent = () => {
+        setTimeout(()=>{
+            setCardStatus(card.status)
+            turnSelectedCard()
+            setTimeout(() => {
+                setCardStatus(card.status)
+            }, 1000);
+        }, 500)
+    }
 
-    const [cardStatus, setCardStatus] = useState(myCardsState[index].status);
-    const showIcon = (
-        <i className={`fa-solid fa-${card.content} text-card`}></i>
-    );
-    const showTextIcon = (
-        <p className="text-card" style={{ fontSize: "1rem" }}>
-            {card.content}
-        </p>
-    );
+    const secondCardIsEqual = () => {
+        setCardStatus(card.status)
+        card.status = "match"
+        selectCardsState.status = "match"
+        setTimeout(() => {
+            setCardStatus(card.status)
+            setSelectCardsState(selectCardsState)
+            setScoreState(scoreState + 100)
+            setSelectCardsState(null)
+        }, 1000);
+    }
+
+    const [cardStatus, setCardStatus] = useState(card.status);
 
     return (
-        <button className={`Card ${cardStatus}`} onClick={() => changeStatus()}>
+        <button className={`Card ${cardStatus}`} onClick={() => {
+            if (card.status !== "match") changeStatus()
+        }}>
             {cardStatus === "close" ? (
                 <img src={cardBg} alt="random card" className="random-card" />
             ) : (
-                <>{showIcon.ref !== null ? showIcon : showTextIcon}</>
+                Icon
             )}
         </button>
     );
